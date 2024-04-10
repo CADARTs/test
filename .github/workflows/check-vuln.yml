@@ -1,0 +1,22 @@
+name: Check Vulnerabilities
+
+on:
+  push:
+    branches:
+      - main
+      - SummaryDependancies
+  workflow_dispatch:
+
+jobs:
+  run-test:
+    name: Vulnerabilities Checkout
+    runs-on: ubuntu-latest
+    container:
+      image: anchore/grype:latest
+      volumes:
+        - ${{ github.workspace }}:/app 
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Checking Vulnerabilities
+        uses: grype/action@v1
