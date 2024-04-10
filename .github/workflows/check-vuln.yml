@@ -19,4 +19,4 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
       - name: Checking Vulnerabilities
-        uses: grype/action@v1
+        uses: grype .
