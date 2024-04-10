@@ -16,8 +16,7 @@ jobs:
       volumes:
         - ${{ github.workspace }}:/app 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-      - name: Checking Vulnerabilities
-        run: |
-          grype .
+      - name: Scan current project
+        uses: anchore/scan-action@v3
+        with:
+          path: "."
