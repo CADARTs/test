@@ -8,6 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
+
   run-test:
     name: Vulnerabilities Checkout
     runs-on: ubuntu-latest
@@ -16,6 +17,9 @@ jobs:
       volumes:
         - ${{ github.workspace }}:/app 
     steps:
+      - name : checkout
+        uses : actions/checkout@v2
+        
       - name: Scan current project
         uses: anchore/scan-action@v3
         with:
