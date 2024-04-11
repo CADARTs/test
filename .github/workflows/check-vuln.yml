@@ -18,7 +18,7 @@ jobs:
         uses: anchore/scan-action/download-grype@v3
         id: grype
 
-      - run: ${{steps.grype.outputs.cmd}} dir:. > tmp
+      - run: ${{steps.grype.outputs.cmd}} -o json dir:. > tmp.json
       
       - name: View Scan
-        run: cat tmp
+        run: cat tmp.json
