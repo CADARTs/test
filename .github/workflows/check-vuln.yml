@@ -13,10 +13,13 @@ jobs:
     steps:
       - name : checkout
         uses : actions/checkout@v2.4.2
-      
+
       - name: Scan
         uses: anchore/scan-action@v3
         with:
           path: .
           fail-build: false
-          output-format: json
+      
+      - name: View Scan
+          if: always()
+          run: cat "${{ steps.scan.outputs.json }}"
