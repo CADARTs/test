@@ -21,5 +21,4 @@ jobs:
           fail-build: false
       
       - name: View Scan
-          if: always()
-          run: cat "${{ steps.scan.outputs.json }}"
+        run: cat "${{ steps.scan.outputs.json }}"
