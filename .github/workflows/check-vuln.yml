@@ -21,4 +21,4 @@ jobs:
           fail-build: false
       
       - name: View Scan
-        run: cat "${{ steps.scan.outputs.sarif }}"
+        run: cat ${{ steps.scan.outputs.sarif }}
