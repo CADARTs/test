@@ -8,19 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-
-  run-test:
-    name: Vulnerabilities Checkout
+  run-syft:
+    name: Syft Checkout
     runs-on: ubuntu-latest
-    container:
-      image: anchore/grype:latest
-      volumes:
-        - ${{ github.workspace }}:/app 
     steps:
       - name : checkout
         uses : actions/checkout@v2
         
       - name: Scan current project
-        uses: anchore/scan-action@v3
-        with:
-          path: "."
+        uses: anchore/sbom-action@v0.12.0
