@@ -14,11 +14,22 @@ jobs:
       - name : Checkout
         uses : actions/checkout@v2.4.2
 
-      - name: Scan and Store
+      - name: Grype and Store
         uses: anchore/scan-action/download-grype@v3
         id: grype
 
-      - run: ${{steps.grype.outputs.cmd}} -o json dir:. > tmp.json
+      - run: ${{steps.grype.outputs.cmd}} -o json dir:. > grypetmp.json
       
-      - name: View Scan
-        run: cat tmp.json
+      - name: Syft and Store
+        uses: anchore/sbom-action/download-syft
+        id: syft
+
+      - run: ${{ steps.syft.outputs.cmd }} -o json dir:. > syfttmp.json
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.12'
+
+      - name: Run Py Scrypt
+        run : python ./.github/workflows/generate_html.py True > index.html
