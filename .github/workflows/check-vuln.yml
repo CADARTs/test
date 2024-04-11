@@ -21,7 +21,7 @@ jobs:
       - run: ${{steps.grype.outputs.cmd}} -o json dir:. > grypetmp.json
       
       - name: Syft and Store
-        uses: anchore/sbom-action/download-syft
+        uses: anchore/sbom-action/download-syft@v0
         id: syft
 
       - run: ${{ steps.syft.outputs.cmd }} -o json dir:. > syfttmp.json
