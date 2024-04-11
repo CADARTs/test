@@ -9,11 +9,11 @@ on:
 
 jobs:
   run-syft:
-    name: Syft Checkout
+    name: Grype Checkout
     runs-on: ubuntu-latest
     steps:
       - name : checkout
         uses : actions/checkout@v2
         
       - name: Scan current project
-        uses: anchore/sbom-action@v0.12.0
+        uses: anchore/scan-action@v3
