@@ -11,14 +11,14 @@ jobs:
     name: Grype Checkout
     runs-on: ubuntu-latest
     steps:
-      - name : checkout
+      - name : Checkout
         uses : actions/checkout@v2.4.2
 
-      - name: Scan
-        uses: anchore/scan-action@v3
-        with:
-          path: .
-          fail-build: false
+      - name: Scan and Store
+        uses: anchore/scan-action/download-grype@v3
+        id: grype
+
+      - run: ${{steps.grype.outputs.cmd}} dir:. > tmp
       
       - name: View Scan
-        run: cat ${{ steps.scan.outputs.sarif }}
+        run: cat tmp
