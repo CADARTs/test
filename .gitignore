@@ -1,0 +1,8 @@
+# Ignore files with .html extension
+*.html
+
+# Ignore files with .json extension
+*.json
+
+# Ignore files with .py extension
+*.py

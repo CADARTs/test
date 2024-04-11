@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-syft:
-    name: Grype Checkout
+  run-vuln:
+    name: Vuln Checkout
     runs-on: ubuntu-latest
     steps:
       - name : Checkout
