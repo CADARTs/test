@@ -18,10 +18,5 @@ jobs:
         uses: anchore/scan-action@v3
         with:
           path: .
-<<<<<<< HEAD
           fail-build: false
           output-format: json
-=======
-          severity-cutoff: "negligible"
-          fail-build: false
->>>>>>> 699528e281d2ca38caa0151819b4e6bcc9d66399
