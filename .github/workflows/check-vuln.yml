@@ -26,10 +26,3 @@ jobs:
 
       - run: ${{ steps.syft.outputs.cmd }} -o json dir:. > syfttmp.json
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10.12'
-
-      - name: Run Py Scrypt
-        run : python ./.github/workflows/generate_html.py True > index.html
