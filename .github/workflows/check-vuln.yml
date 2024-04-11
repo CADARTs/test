@@ -18,4 +18,5 @@ jobs:
         uses: anchore/scan-action@v3
         with:
           path: .
+          severity-cutoff: "negligible"
           fail-build: false
