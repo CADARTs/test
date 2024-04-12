@@ -1,9 +1,6 @@
 name: Check Vulnerabilities
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
