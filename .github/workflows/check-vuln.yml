@@ -13,16 +13,16 @@ jobs:
       
     steps:
       - name : Checkout
-        uses : actions/checkout@v2.4.2
+        uses : actions/checkout@v4
 
       - name: Retrieving Grype
-        uses: anchore/scan-action/download-grype@v3
+        uses: anchore/scan-action/download-grype@v3.6.4
         id: grype
       - name : Store
         run: ${{steps.grype.outputs.cmd}} -o json dir:. > grypetmp.json
 
       - name: Upload Grype Summary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: grype_summary
           path: grypetmp.json
@@ -32,16 +32,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name : Checkout
-        uses : actions/checkout@v2.4.2
+        uses : actions/checkout@v4
 
       - name: Retrieving Syft
-        uses: anchore/sbom-action/download-syft@v0
+        uses: anchore/sbom-action/download-syft@v0.15.10
         id: syft
       - name: Store
         run: ${{ steps.syft.outputs.cmd }} -o json dir:. > syfttmp.json
 
       - name: Upload Syft Summary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: syft_summary
           path: syfttmp.json
@@ -53,15 +53,15 @@ jobs:
 
     steps:
       - name : Checkout
-        uses : actions/checkout@v2.4.2
+        uses : actions/checkout@v4
 
       - name: Retrieving Grype Summary
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.4
         with:
           name: grype_summary
       
       - name: Retrieving Syft Summary
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.4
         with:
           name: syft_summary
 
@@ -74,7 +74,7 @@ jobs:
         run: python ./.github/workflows/generate_html.py TRUE > index.html
 
       - name: Archive HTML as Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: index.html
           path: ./index.html
