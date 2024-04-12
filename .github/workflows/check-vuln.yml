@@ -35,7 +35,10 @@ jobs:
       - name: Exec python scrypt
         run: python ./.github/workflows/generate_html.py TRUE > index.html
 
-      - name: Print index.html
-        run: echo "$(<index.html)" >> $GITHUB_OUTPUT
+      - name: Archive HTML as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: index.html
+          path: ./index.html
 
       
