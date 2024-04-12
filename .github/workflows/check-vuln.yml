@@ -1,11 +1,14 @@
 name: Check Vulnerabilities
 
 on:
+  push:
+    branches:
+      main
   workflow_dispatch:
 
 jobs:
-  run-vuln:
-    name: Vuln Checkout
+  Run-Grype:
+    name: Grype Summary
     runs-on: ubuntu-latest
       
     steps:
@@ -18,17 +21,31 @@ jobs:
       - name : Store
         run: ${{steps.grype.outputs.cmd}} -o json dir:. > grypetmp.json
       
-      - name: Retrieving Syft
-        uses: anchore/sbom-action/download-syft@v0
-        id: syft
-      - name: Store
-        run: ${{ steps.syft.outputs.cmd }} -o json dir:. > syfttmp.json
-      
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
         
+      
+  Run-Syft:
+    name: Syft Summary
+    runs-on: ubuntu-latest
+    steps:
+      - name : Checkout
+        uses : actions/checkout@v2.4.2
+
+      - name: Retrieving Syft
+        uses: anchore/sbom-action/download-syft@v0
+        id: syft
+      - name: Store
+        run: ${{ steps.syft.outputs.cmd }} -o json dir:. > syfttmp.json
+
+  Upload-Artifact:
+    name: Upload Artifact
+    needs: [Run-Grype,Run-Syft]
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Exec python scrypt
         run: python ./.github/workflows/generate_html.py TRUE > index.html
 
@@ -37,5 +54,3 @@ jobs:
         with:
           name: index.html
           path: ./index.html
-
-      
