@@ -10,20 +10,32 @@ jobs:
   run-vuln:
     name: Vuln Checkout
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["pypy3.9", "pypy3.10", "3.9", "3.10", "3.11", "3.12"]
+      
     steps:
       - name : Checkout
         uses : actions/checkout@v2.4.2
 
-      - name: Grype
+      - name: Retrieving Grype
         uses: anchore/scan-action/download-grype@v3
         id: grype
       - name : Store
         run: ${{steps.grype.outputs.cmd}} -o json dir:. > grypetmp.json
       
-      - name: Syft
+      - name: Retrieving Syft
         uses: anchore/sbom-action/download-syft@v0
         id: syft
       - name: Store
         run: ${{ steps.syft.outputs.cmd }} -o json dir:. > syfttmp.json
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+        
+      - name: Exec python scrypt
+        run: python ./.github/workflows/generate_html.py TRUE > index.html
 
       
