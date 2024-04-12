@@ -20,13 +20,13 @@ jobs:
         id: grype
       - name : Store
         run: ${{steps.grype.outputs.cmd}} -o json dir:. > grypetmp.json
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
+
+      - name: Upload Grype Summary
+        uses: actions/upload-artifact@v4
         with:
-          python-version: '3.x'
+          name: grype_summary
+          path: grypetmp.json
         
-      
   Run-Syft:
     name: Syft Summary
     runs-on: ubuntu-latest
@@ -40,6 +40,12 @@ jobs:
       - name: Store
         run: ${{ steps.syft.outputs.cmd }} -o json dir:. > syfttmp.json
 
+      - name: Upload Syft Summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: syft_summary
+          path: syfttmp.json
+
   Upload-Artifact:
     name: Upload Artifact
     needs: [Run-Grype,Run-Syft]
@@ -48,7 +54,22 @@ jobs:
     steps:
       - name : Checkout
         uses : actions/checkout@v2.4.2
-        
+
+      - name: Retrieving Grype Summary
+        uses: actions/download-artifact@v4
+        with:
+          name: grype_summary
+      
+      - name: Retrieving Syft Summary
+        uses: actions/download-artifact@v4
+        with:
+          name: syft_summary
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
       - name: Exec python scrypt
         run: python ./.github/workflows/generate_html.py TRUE > index.html
 
