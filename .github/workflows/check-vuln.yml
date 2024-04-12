@@ -81,4 +81,5 @@ jobs:
       - name : Delete TMP artifacts
         uses: geekyeggo/delete-artifact@v5
         with:
-          name: *_summary
+          name: |
+            *_summary
