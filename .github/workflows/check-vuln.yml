@@ -79,7 +79,7 @@ jobs:
           name: index.html
           path: ./index.html
       - name : Delete TMP artifacts
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@v5.0.0
         with:
           name: |
             *_summary
