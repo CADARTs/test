@@ -7,6 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
+
+  ## Récupère les vulnérabilités liées aux dépendances
   Run-Grype:
     name: Grype Summary
     runs-on: ubuntu-latest
@@ -26,7 +28,8 @@ jobs:
         with:
           name: grype_summary
           path: grypetmp.json
-        
+  
+  ## Récupère les dépendances (nb totale)
   Run-Syft:
     name: Syft Summary
     runs-on: ubuntu-latest
@@ -46,6 +49,7 @@ jobs:
           name: syft_summary
           path: syfttmp.json
 
+  ## Crée le index.html pour visualiser les failles possibles        
   Upload-Artifact:
     name: Upload Artifact
     needs: [Run-Grype,Run-Syft]
@@ -78,8 +82,31 @@ jobs:
         with:
           name: index.html
           path: ./index.html
+
+  ## Retire les artefacts temporaires
+  Remove-Artifact:
+    name: Remove Artifact
+    needs: Upload-Artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name : Checkout
+        uses : actions/checkout@v4
+
+      - name: Retrieving Grype Summary
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: grype_summary
+      
+      - name: Retrieving Syft Summary
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: syft_summary
+      
       - name : Delete TMP artifacts
         uses: geekyeggo/delete-artifact@v5.0.0
         with:
           name: |
             *_summary
+      
+      
