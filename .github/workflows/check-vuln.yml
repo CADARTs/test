@@ -50,7 +50,7 @@ jobs:
           path: syfttmp.json
 
   ## Crée le index.html pour visualiser les failles possibles        
-  Upload-Artifact:
+  Upload-index:
     name: Upload Artifact
     needs: [Run-Grype,Run-Syft]
     runs-on: ubuntu-latest
@@ -70,18 +70,79 @@ jobs:
           name: syft_summary
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: '3.x'
 
       - name: Exec python scrypt
-        run: python ./.github/workflows/generate_html.py TRUE > index.html
+        run: python ./.github/workflows/generate_html.py > index.html
 
-      - name: Archive HTML as Artifact
+      - name: Archive index as Artifact
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: index.html
+          name: artifact_index
           path: ./index.html
+
+  ## Crée le dépendance.html pour visualiser les failles trouvé par grype:
+  Upload-Dep:
+    name: Upload Dep
+    needs: [Run-Grype,Run-Syft]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name : Checkout
+        uses : actions/checkout@v4
+
+      - name: Retrieving Grype Summary
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: grype_summary
+
+      - name: Retrieving Syft Summary
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: syft_summary
+
+      - name: Set up Python
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: '3.x'
+      
+      - name: Exec python scrypt
+        run: python ./.github/workflows/generate_list_html.py > dependance.html
+
+      - name: Archive Dependance as Artifact
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: artifact_dependance
+          path: ./dependance.html
+
+  Upload-Artifact:
+    name: Retireve and upload artifact
+    needs: [Upload-index,Upload-Dep]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Retrieving index artifact
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: artifact_index
+      
+      - name: Retrieving Dependance artifact
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: artifact_dependance
+        
+      - name: Archives index and dependance in the same artifact
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: vulnerabilities.zip
+          path: |
+            ./index.html
+            ./dependance.html
 
   ## Retire les artefacts temporaires
   Remove-Artifact:
@@ -108,5 +169,6 @@ jobs:
         with:
           name: |
             *_summary
+            artifact_*
       
       

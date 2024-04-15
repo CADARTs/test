@@ -8,16 +8,13 @@ def recupJson(path:str):
 
 
 class Vulnerabilite(object):
-    def __init__(self,file:str,silent:bool):
+    def __init__(self,file:str):
         self.f = file
         self.check = False
         self.vulnerabilities = [0,0,0,0,0]
-        self.silent = silent
     def __repr__(self) -> str:
         return f"Nombre de vulnérabilité :\nCritical : {self.vulnerabilities[0]}\nHigh : {self.vulnerabilities[1]}\nMedium : {self.vulnerabilities[2]}\nLow : {self.vulnerabilities[3]}\nInsignifiante : {self.vulnerabilities[4]}"
     def recupVuln(self):
-        if self.silent != True:
-            print("Check vulnerabilities ...")
         self.check = True
         tmpJson = json.loads(self.f)
         mat = tmpJson['matches']
@@ -33,8 +30,6 @@ class Vulnerabilite(object):
                 self.vulnerabilities[3]+=1
             else:
                 self.vulnerabilities[4]+=1
-        if self.silent != True:
-            print("Done Checking")
     
     def printAll(self):
         if self.check == False:
@@ -80,15 +75,6 @@ var totalVuln = crit + hig + med + low + ins;"""
             self.recupVuln()
         
 
-def createHTML(vul:Vulnerabilite):
-    return
-
-silent = False
-
-if(len(sys.argv)>1):
-    if sys.argv[1].lower() == "true":
-        silent = True
-
 class Dependancies(object):
     def __init__(self,file:str):
         self.nbDep = 0
@@ -115,7 +101,7 @@ index ="""<!DOCTYPE html>
 <html>
   <head>
     <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
-    <script type='text/javascript'>""" + Vulnerabilite(recupJson('grypetmp.json'),silent).returnAll() + '\n' + Dependancies(recupJson('syfttmp.json')).getNbDep() +"""\n   google.charts.load('current', {'packages':['corechart']});
+    <script type='text/javascript'>""" + Vulnerabilite(recupJson('grypetmp.json')).returnAll() + '\n' + Dependancies(recupJson('syfttmp.json')).getNbDep() +"""\n   google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChartVuln);
       google.charts.setOnLoadCallback(drawChart);
 
@@ -171,6 +157,10 @@ index ="""<!DOCTYPE html>
   <body>
     <div id='piechart' style='width: 900px; height: 500px;'></div>
     <div id='piechart2' style='width: 900px; height: 500px;'></div>
+
+    <button>
+      <a href="./dependance.html">Allez vers la page des dépendances</a>
+    </button>
   </body>
 </html>
 
