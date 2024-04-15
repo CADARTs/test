@@ -182,7 +182,7 @@ class ListeDependance(object):
 
 grype = ListeVulnerable()
 
-grype.recupVuln("../../grypetmp.json")
+grype.recupVuln("./grypetmp.json")
 
 html = ListeDependance()
 
