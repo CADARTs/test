@@ -102,7 +102,7 @@ class Vulnerable(object):
             color = 'style="color:#66ff33;"'
         else:
             color = 'style="color:""'
-        print(f"<tr style=\"display:none;\" id ='"+id+f"'><td>{self.nom}</td><td> - </td><td> - </td><td>{str(self.fix)}</td><td><p "+color+f"'>{self.severite}</p></td><td>{self.id}</td><td><a href='{self.lien}' target='_blank'> {self.lien} </a></td><td>{self.vector}</td></tr>")
+        print(f"<tr style=\"\"  class='"+id+f"'><td>{self.nom}</td><td> - </td><td> - </td><td>{str(self.fix)}</td><td><p "+color+f"'>{self.severite}</p></td><td>{self.id}</td><td><a href='{self.lien}' target='_blank'> {self.lien} </a></td><td>{self.vector}</td></tr>")
 
 
 class ListeVulnerable(object):
@@ -165,7 +165,7 @@ class Dependance(object):
     def printHTML(self):
         print(f"<tr><td>{self.Nom}</td><td>{self.version}</td><td>{len(self.LVulnerable)}</td><td>{str(self.VersionFix)}</td><td>-</td><td>-</td><td>-</td><td>-</td>")
         if(len(self.LVulnerable)!=0):
-            print("<td><img id='"+self.Nom +""+ str(self.version)+"d' src='./derou.png' onclick='rerou(\""+ self.Nom +""+ str(self.version) +"\");rerou(\""+ self.Nom +""+ str(self.version) +"r\");derou(\""+ self.Nom +""+ str(self.version) +"d\");'><img id='"+self.Nom +""+ str(self.version)+"r' src='./rerou.png' onclick='derou(\""+ self.Nom +""+ str(self.version) +"\");derou(\""+ self.Nom +""+ str(self.version) +"r\");rerou(\""+ self.Nom +""+ str(self.version) +"d\");' style='display: none;'></td></tr>")
+            print("<td><img id='"+self.Nom +""+ str(self.version)+"d' src='./derou.png' onclick='aff(\""+ self.Nom +""+ str(self.version) +"\");rerou(\""+ self.Nom +""+ str(self.version) +"r\");derou(\""+ self.Nom +""+ str(self.version) +"d\");'><img id='"+self.Nom +""+ str(self.version)+"r' src='./rerou.png' onclick='cac(\""+ self.Nom +""+ str(self.version) +"\");derou(\""+ self.Nom +""+ str(self.version) +"r\");rerou(\""+ self.Nom +""+ str(self.version) +"d\");' style='display: none;'></td></tr>")
         for i in self.LVulnerable:
             i.printHTML(self.Nom+""+str(self.version))
 
@@ -238,6 +238,22 @@ print("""
     <head>
         <title>Tableau</title>
       <script>
+        function aff(idElement){
+            var element = document.getElementsByClassName(idElement);
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.display = 'block';
+                elements[i].style.textAlign = 'center';
+            }
+        }
+
+        function cac(idElement){
+            var element = document.getElementsByClassName(idElement);
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.display = 'none';
+                elements[i].style.textAlign = 'center';
+            }
+        }
+
         function derou(idElement){
             var element = document.getElementById(idElement);
             if (element){
