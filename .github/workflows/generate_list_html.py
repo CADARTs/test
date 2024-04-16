@@ -241,8 +241,7 @@ print("""
         function aff(idElement){
             var elements = document.getElementsByClassName(idElement);
             for (var i = 0; i < elements.length; i++) {
-                elements[i].style.display = 'block';
-                elements[i].style.textAlign = 'center';
+                elements[i].style.display = '';
             }
         }
 
@@ -250,7 +249,6 @@ print("""
             var elements = document.getElementsByClassName(idElement);
             for (var i = 0; i < elements.length; i++) {
                 elements[i].style.display = 'none';
-                elements[i].style.textAlign = 'center';
             }
         }
 
@@ -258,15 +256,13 @@ print("""
             var element = document.getElementById(idElement);
             if (element){
                 element.style.display = 'none';
-                element.style.textAlign = 'center';
             }
         }
       
         function rerou(idElement){
             var element = document.getElementById(idElement);
             if (element){
-                element.style.display = 'block';
-                element.style.textAlign = 'center';
+                element.style.display = '';
             }
         }
       </script>
