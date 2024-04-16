@@ -79,7 +79,7 @@ class Vulnerable(object):
     """
     Class Vulnerable : permet de définir une vulnérabilité.\n
     Elle est composé d'un nom, d'un id, d'un lien expliquant la vulnérabilité, d'une gravité, d'un vector et d'une version fixe.\n
-    Il est possible qu'une vulnérabilité n'a pas encore de fixe alors le chant de version.version sera de type None
+    Il est possible qu'une vulnérabilité n'a pas encore de fixe alors le chant de version.version sera de type None.
     """
     def __init__(self,id:str,lien:str,severe:str,vector:str,fix,nom:str):
         self.nom = nom
@@ -239,7 +239,7 @@ print("""
         <title>Tableau</title>
       <script>
         function aff(idElement){
-            var element = document.getElementsByClassName(idElement);
+            var elements = document.getElementsByClassName(idElement);
             for (var i = 0; i < elements.length; i++) {
                 elements[i].style.display = 'block';
                 elements[i].style.textAlign = 'center';
@@ -247,7 +247,7 @@ print("""
         }
 
         function cac(idElement){
-            var element = document.getElementsByClassName(idElement);
+            var elements = document.getElementsByClassName(idElement);
             for (var i = 0; i < elements.length; i++) {
                 elements[i].style.display = 'none';
                 elements[i].style.textAlign = 'center';
