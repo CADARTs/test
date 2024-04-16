@@ -51,7 +51,7 @@ jobs:
 
   ## Crée le index.html pour visualiser les failles possibles        
   Upload-index:
-    name: Upload Artifact
+    name: Upload index
     needs: [Run-Grype,Run-Syft]
     runs-on: ubuntu-latest
 
@@ -135,7 +135,10 @@ jobs:
         uses: actions/download-artifact@v4.1.4
         with:
           name: artifact_dependance
-        
+      
+      - name: copy home.png
+        run: cp ./.github/workflows/home.png ./home.png
+
       - name: Archives index and dependance in the same artifact
         uses: actions/upload-artifact@v4.3.1
         with:
@@ -143,6 +146,7 @@ jobs:
           path: |
             ./index.html
             ./dependance.html
+            ./home.png
 
   ## Retire les artefacts temporaires
   Remove-Artifact:

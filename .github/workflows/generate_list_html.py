@@ -90,7 +90,7 @@ class Vulnerable(object):
             color = 'style="color:#66ff33;"'
         else:
             color = 'style="color:""'
-        print(f"<tr><td>{self.nom}</td><td> - </td><td> - </td><td>{str(self.fix)}</td><td><p "+color+f"'>{self.severite}</p></td><td>{self.id}</td><td><a href='{self.lien}'> {self.lien} </a></td><td>{self.vector}</td></tr>")
+        print(f"<tr><td>{self.nom}</td><td> - </td><td> - </td><td>{str(self.fix)}</td><td><p "+color+f"'>{self.severite}</p></td><td>{self.id}</td><td><a href='{self.lien}' target='_blank'> {self.lien} </a></td><td>{self.vector}</td></tr>")
 
 
 class ListeVulnerable(object):
@@ -141,9 +141,20 @@ class Dependance(object):
         return f"{self.Nom}: {self.version}, {self.VersionFix}, [{vuln_str}]"
     
     def printHTML(self):
-        print(f"<tr><td>{self.Nom}</td><td>{self.version}</td><td>{len(self.LVulnerable)}</td><td>{str(self.VersionFix)}</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>")
-        for i in self.LVulnerable:
-            i.printHTML()
+        print(f"<tr><td>{self.Nom}</td><td>{self.version}</td><td>{len(self.LVulnerable)}</td><td>{str(self.VersionFix)}</td><td>-</td><td>-</td><td>-</td><td>-</td>")
+        print("<td><select id='select_vuln'>")
+        for i, vuln in enumerate(self.LVulnerable):
+            print(f"<option value='{i}'>{vuln.nom}</option>")
+        print("</select></td></tr>")
+
+        print("<script>")
+        print("document.getElementById('select_vuln').addEventListener('change', function() {")
+        print("var selectedIndex = this.selectedIndex;")
+        print("var options = this.options;")
+        print("var selectedVuln = options[selectedIndex].text;")
+        print("// Do something with selectedVuln")
+        print("});")
+        print("</script>")
 
 class ListeDependance(object):
     def __init__(self) -> None:
@@ -171,11 +182,15 @@ class ListeDependance(object):
                 self.liste.append(tmpDep)
 
     def printHTML(self):
-        print("<table classe='t1'>")
-        print("<tr><td>Nom</td><td>Version</td><td>Nombre de vulnérabilité</td><td>Version Fix</td><td>Sévérité</td><td>ID</td><td>Lien</td><td>Vector</td></tr>")
+        print("<div class='table-container'><table classe='t1'>")
+        print("""<thead>
+<tr><td>Nom</td><td>Version</td><td>Nombre de vulnérabilité</td><td>Version Fix</td><td>Sévérité</td><td>ID</td><td>Lien</td><td>Vector</td><td><a href="./index.html">
+    <!-- Button element -->
+    <button class="button"></button>
+    </a></td></tr></thead><tbody>""")
         for i in self.liste:
             i.printHTML()
-        print("</table>")
+        print("</tbody></table>")
 
             
 
@@ -199,38 +214,53 @@ print("""
     <head>
         <title>Tableau</title>
         <style>
-      
-     #Medium{
-      color :'#ffcc00';
-     }
-      
-     #High{
-      color :'#ff0000';
-     }
-      
-      #Critical{
-        color :'#b300b3';
-      }
 
-      #Low{
-      color :'#66ff33';
-      }
-
-      table{
-  border-collapse: collapse;
-  width: 300px;
-  margin-bottom: 20px;
-}
-.t1{
-  table-layout: fixed;
+      .table-container {
+    max-height: auto;
+    max-width: 300px
+    overflow-y: auto;
 }
 
-th, td{
-  border: 1px solid black;
-  padding: 10px;
-  white-space: nowrap;
-  text-align : center;
+table {
+    font-size:14px;
+    border-collapse: collapse;
+    width: 300px; 
+    margin-bottom: 20px;
 }
+
+.t1 {
+    table-layout: fixed;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+thead {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+      
+      .button {
+            display: inline-block;
+            width: 32px; /* Set the width of the button */
+            height: 32px; /* Set the height of the button */
+            background-image: url('home.png'); /* Specify the URL of your image */
+            background-size: cover; /* Ensure the image covers the button */
+            border: none;
+            cursor: pointer;
+        }
+
+
+        /* Hover effect */
+        .button:hover {
+            opacity: 0.8; /* Adjust the opacity as needed */
+        }
         </style>
     </head>
     <body>
@@ -239,9 +269,6 @@ th, td{
 html.printHTML()
 
 print("""
-      <button>
-      <a href="./index.html">Retourner vers les diagrammes circulaires</a>
-    </button>
     </body>
 </html>
 """)
