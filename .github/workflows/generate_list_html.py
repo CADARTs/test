@@ -142,7 +142,7 @@ class Dependance(object):
     
     def printHTML(self):
         print(f"<tr><td>{self.Nom}</td><td>{self.version}</td><td>{len(self.LVulnerable)}</td><td>{str(self.VersionFix)}</td><td>-</td><td>-</td><td>-</td><td>-</td>")
-        print("<td><img src='./derou.png' onclick='alert(\""+ self.Nom +""+ str(self.version) +"\")'</td></tr>")
+        print("<td><img id='"+self.Nom +""+ str(self.version)+"d' src='./derou.png' onclick='rerou(\""+ self.Nom +""+ str(self.version) +"\");rerou(\""+ self.Nom +""+ str(self.version) +"r\");derou(\""+ self.Nom +""+ str(self.version) +"d\");'><img id='"+self.Nom +""+ str(self.version)+"d' src='./rerou.png' onclick='derou(\""+ self.Nom +""+ str(self.version) +"\");derou(\""+ self.Nom +""+ str(self.version) +"r\");rerou(\""+ self.Nom +""+ str(self.version) +"d\");' display='none'></td></tr>")
         for i in self.LVulnerable:
             i.printHTML()
 
@@ -203,6 +203,21 @@ print("""
 <html>
     <head>
         <title>Tableau</title>
+      <script>
+        function derou(idElement){
+            var element = document.getElementById(idElement);
+            if (element){
+                element.style.display = 'none';
+            }
+        }
+      
+        function rerou(idElement){
+            var element = document.getElementById(idElement);
+            if (element){
+                element.style.display = 'block';
+            }
+        }
+      </script>
         <style>
 
       .table-container {
