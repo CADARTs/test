@@ -102,7 +102,7 @@ class Vulnerable(object):
             color = 'style="color:#66ff33;"'
         else:
             color = 'style="color:""'
-        print(f"<tr style=\"\"  class='"+id+f"'><td>{self.nom}</td><td> - </td><td> - </td><td>{str(self.fix)}</td><td><p "+color+f"'>{self.severite}</p></td><td>{self.id}</td><td><a href='{self.lien}' target='_blank'> {self.lien} </a></td><td>{self.vector}</td></tr>")
+        print(f"<tr style=\"display:none;\"  class='"+id+f"'><td>{self.nom}</td><td> - </td><td> - </td><td>{str(self.fix)}</td><td><p "+color+f"'>{self.severite}</p></td><td>{self.id}</td><td><a href='{self.lien}' target='_blank'> {self.lien} </a></td><td>{self.vector}</td></tr>")
 
 
 class ListeVulnerable(object):
