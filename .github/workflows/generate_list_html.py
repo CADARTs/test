@@ -93,16 +93,16 @@ class Vulnerable(object):
     
     def printHTML(self,id):
         if( self.severite =='Critical'):
-            color = 'style="color:#b300b3;display=\'none\';"'
+            color = 'style="color:#b300b3;"'
         elif( self.severite =='High'):
-            color = 'style="color:#ff0000;display=\'none\';"'
+            color = 'style="color:#ff0000;"'
         elif( self.severite =='Medium'):
-            color = 'style="color:#ffcc00;display=\'none\';"'
+            color = 'style="color:#ffcc00;"'
         elif( self.severite =='Low'):
-            color = 'style="color:#66ff33;display=\'none\';"'
+            color = 'style="color:#66ff33;"'
         else:
             color = 'style="color:""'
-        print(f"<tr id ='"+id+"'><td>{self.nom}</td><td> - </td><td> - </td><td>{str(self.fix)}</td><td><p "+color+f"'>{self.severite}</p></td><td>{self.id}</td><td><a href='{self.lien}' target='_blank'> {self.lien} </a></td><td>{self.vector}</td></tr>")
+        print(f"<tr style=\"display:none;\" id ='"+id+f"'><td>{self.nom}</td><td> - </td><td> - </td><td>{str(self.fix)}</td><td><p "+color+f"'>{self.severite}</p></td><td>{self.id}</td><td><a href='{self.lien}' target='_blank'> {self.lien} </a></td><td>{self.vector}</td></tr>")
 
 
 class ListeVulnerable(object):
