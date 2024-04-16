@@ -268,17 +268,18 @@ print("""
       </script>
         <style>
 
-      .table-container {
+    
+    .table-container {
     max-height: auto;
     max-width: 300px
     overflow-y: auto;
 }
 
 table {
-    font-size:14px;
     border-collapse: collapse;
-    width: 300px; 
+    width: 100%; 
     margin-bottom: 20px;
+    font-size:75%;
 }
 
 .t1 {
@@ -298,6 +299,16 @@ thead {
     top: 0;
     z-index: 1;
 }
+
+    @media screen and (max-width: 1300px) {
+        table {
+    border-collapse: collapse;
+    width: 100%; 
+    margin-bottom: 20px;
+    font-size:55%;
+}
+    }
+
       
       .button {
             display: inline-block;
