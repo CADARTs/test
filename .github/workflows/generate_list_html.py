@@ -3,10 +3,17 @@ import json
 import sys
 
 def recupJson(path:str)-> TextIOWrapper:
+    """
+    permet de récupérer le fichier JSON
+    """
     f = open(path,'r')
     return f.read()
 
 class Version(object):
+    """
+    Class Version : permet de définir une version.\n
+    Une version est de type "10.5.1" pour la comparé il suffit demettre chaque numéro dans un tableau [10,5,1] il suffit par la suite de comparé chaque chant avec une autre version.\n
+    """
     def __init__(self,version):
         if(version==""):
             self.version = None
@@ -69,6 +76,11 @@ class Version(object):
         return True
     
 class Vulnerable(object):
+    """
+    Class Vulnerable : permet de définir une vulnérabilité.\n
+    Elle est composé d'un nom, d'un id, d'un lien expliquant la vulnérabilité, d'une gravité, d'un vector et d'une version fixe.\n
+    Il est possible qu'une vulnérabilité n'a pas encore de fixe alors le chant de version.version sera de type None
+    """
     def __init__(self,id:str,lien:str,severe:str,vector:str,fix,nom:str):
         self.nom = nom
         self.id = id
@@ -94,6 +106,11 @@ class Vulnerable(object):
 
 
 class ListeVulnerable(object):
+    """
+    Class ListeVulnerable : Permet de conserver la liste des vulnérabilités.\n
+    Elle lis dans un fichier JSON pour en extraire les vulnérabilités lié à une application.\n
+    La méthode printHMTL() appel la méthode str de chaque vulnérabilité
+    """
     def __init__(self) -> None:
         self.liste:Vulnerable = []
 
@@ -125,6 +142,11 @@ class ListeVulnerable(object):
         return ""
             
 class Dependance(object):
+    """
+    Class Dependance, permet de définir une dépendance.\n
+    Elle est composé d'un Nom, d'une Version, d'un certain nombre de vulnérabilité et si il y a une vunlnérabilité alors la version fix la plus haute sera conservé dans la dépendance.\n
+    La méthode printHTML() permet d'afficher les caractéristiques de chaque Dependance et si une vulnérabilité existe alors un menu déroulant peut être utilisé pour afficher les vulnérabilités.
+    """
     def __init__(self,Nom:str,version:str) -> None:
         self.Nom = Nom
         self.version:Version = Version(version)
@@ -142,11 +164,25 @@ class Dependance(object):
     
     def printHTML(self):
         print(f"<tr><td>{self.Nom}</td><td>{self.version}</td><td>{len(self.LVulnerable)}</td><td>{str(self.VersionFix)}</td><td>-</td><td>-</td><td>-</td><td>-</td>")
-        print("<td><img id='"+self.Nom +""+ str(self.version)+"d' src='./derou.png' onclick='rerou(\""+ self.Nom +""+ str(self.version) +"\");rerou(\""+ self.Nom +""+ str(self.version) +"r\");derou(\""+ self.Nom +""+ str(self.version) +"d\");'><img id='"+self.Nom +""+ str(self.version)+"r' src='./rerou.png' onclick='derou(\""+ self.Nom +""+ str(self.version) +"\");derou(\""+ self.Nom +""+ str(self.version) +"r\");rerou(\""+ self.Nom +""+ str(self.version) +"d\");' style='display: none;'></td></tr>")
+        if(len(self.LVulnerable)!=0):
+            print("<td><img id='"+self.Nom +""+ str(self.version)+"d' src='./derou.png' onclick='rerou(\""+ self.Nom +""+ str(self.version) +"\");rerou(\""+ self.Nom +""+ str(self.version) +"r\");derou(\""+ self.Nom +""+ str(self.version) +"d\");'><img id='"+self.Nom +""+ str(self.version)+"r' src='./rerou.png' onclick='derou(\""+ self.Nom +""+ str(self.version) +"\");derou(\""+ self.Nom +""+ str(self.version) +"r\");rerou(\""+ self.Nom +""+ str(self.version) +"d\");' style='display: none;'></td></tr>")
         for i in self.LVulnerable:
             i.printHTML()
 
+## 
+
+# 
+##
 class ListeDependance(object):
+    """
+    Class ListeDependance : permet de stocker les dépendances avec leurs vulnérabilités ou non qui sont triés\n
+    Elle lis dans un fichier JSON pour conserver les dépendances puis compare avec une liste de vulnérabilités\n 
+    Si une dépendance existe, même nom et numéro de version version\n
+    Alors elle sera stockée\n
+    Lors de la comparaison avec la liste de vulnérabilité si le nom de la dépendance est le même alors la vulnérabilité sera ajoutée à la dépendance.\n
+    Puis après avoir crée les dépendances et rajouté les vulnérabilités, les vulnérabilités sont trié dans l'ordre suivant Critical -> High -> Medium -> Low\n
+    Pour finir la méthode printHTML() permet d'afficher à l'écran une partie du tableau de la liste des dépendances puis appel l'HTML de la dépendance pour avoir les spécificité
+    """
     def __init__(self) -> None:
         self.liste = []
     
@@ -206,7 +242,8 @@ print("""
             var element = document.getElementById(idElement);
             if (element){
                 element.style.display = 'none';
-                element.style.textAlign = 'center';
+                image.style.marginLeft = "auto";
+                image.style.marginRight = "auto";
             }
         }
       
@@ -214,7 +251,8 @@ print("""
             var element = document.getElementById(idElement);
             if (element){
                 element.style.display = 'block';
-                element.style.textAlign = 'center';
+                image.style.marginLeft = "auto";
+                image.style.marginRight = "auto";
             }
         }
       </script>
