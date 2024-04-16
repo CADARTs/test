@@ -141,8 +141,8 @@ class Dependance(object):
         return f"{self.Nom}: {self.version}, {self.VersionFix}, [{vuln_str}]"
     
     def printHTML(self):
-        print(f"<tr><td>{self.Nom}</td><td>{self.version}</td><td>{len(self.LVulnerable)}</td><td>{str(self.VersionFix)}</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>")
-        print("<td><img src='./derou.png' onclick='alert("+ self.Nom +""+ str(self.version) +")'")
+        print(f"<tr><td>{self.Nom}</td><td>{self.version}</td><td>{len(self.LVulnerable)}</td><td>{str(self.VersionFix)}</td><td>-</td><td>-</td><td>-</td><td>-</td>")
+        print("<td><img src='./derou.png' onclick='alert("+ self.Nom +""+ str(self.version) +")'</td></tr>")
         for i in self.LVulnerable:
             i.printHTML()
 
