@@ -141,20 +141,10 @@ class Dependance(object):
         return f"{self.Nom}: {self.version}, {self.VersionFix}, [{vuln_str}]"
     
     def printHTML(self):
-        print(f"<tr><td>{self.Nom}</td><td>{self.version}</td><td>{len(self.LVulnerable)}</td><td>{str(self.VersionFix)}</td><td>-</td><td>-</td><td>-</td><td>-</td>")
-        print("<td><select id='select_vuln'>")
-        for i, vuln in enumerate(self.LVulnerable):
-            print(f"<option value='{i}'>{vuln.nom}</option>")
-        print("</select></td></tr>")
-
-        print("<script>")
-        print("document.getElementById('select_vuln').addEventListener('change', function() {")
-        print("var selectedIndex = this.selectedIndex;")
-        print("var options = this.options;")
-        print("var selectedVuln = options[selectedIndex].text;")
-        print("// Do something with selectedVuln")
-        print("});")
-        print("</script>")
+        print(f"<tr><td>{self.Nom}</td><td>{self.version}</td><td>{len(self.LVulnerable)}</td><td>{str(self.VersionFix)}</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>")
+        print("<td><img src='./derou.png' onclick='alert("+ self.Nom +""+ str(self.version) +")'")
+        for i in self.LVulnerable:
+            i.printHTML()
 
 class ListeDependance(object):
     def __init__(self) -> None:
