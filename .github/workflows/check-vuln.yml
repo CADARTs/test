@@ -136,8 +136,11 @@ jobs:
         with:
           name: artifact_dependance
       
-      - name: copy home.png
-        run: cp ./.github/workflows/home.png ./home.png
+      - name: copy home.png derou.png rerou.png
+        run: |
+          cp ./.github/workflows/home.png ./home.png
+          cp ./.github/workflows/derou.png ./derou.png
+          cp ./.github/workflows/rerou.png ./rerou.png
 
       - name: Archives index and dependance in the same artifact
         uses: actions/upload-artifact@v4.3.1
@@ -147,6 +150,8 @@ jobs:
             ./index.html
             ./dependance.html
             ./home.png
+            ./derou.png
+            ./rerou.png
 
   ## Retire les artefacts temporaires
   Remove-Artifact:
