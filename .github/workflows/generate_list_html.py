@@ -91,18 +91,18 @@ class Vulnerable(object):
     def __str__(self) -> str:
         return f"Nom: {self.nom}, ID: {self.id}, Lien: {self.lien}, Sévérité: {self.severite}, Vecteur: {self.vector}, Version fixe: {str(self.fix)}"
     
-    def printHTML(self):
+    def printHTML(self,id):
         if( self.severite =='Critical'):
-            color = 'style="color:#b300b3;"'
+            color = 'style="color:#b300b3;display=\'none\';"'
         elif( self.severite =='High'):
-            color = 'style="color:#ff0000;"'
+            color = 'style="color:#ff0000;display=\'none\';"'
         elif( self.severite =='Medium'):
-            color = 'style="color:#ffcc00;"'
+            color = 'style="color:#ffcc00;display=\'none\';"'
         elif( self.severite =='Low'):
-            color = 'style="color:#66ff33;"'
+            color = 'style="color:#66ff33;display=\'none\';"'
         else:
             color = 'style="color:""'
-        print(f"<tr><td>{self.nom}</td><td> - </td><td> - </td><td>{str(self.fix)}</td><td><p "+color+f"'>{self.severite}</p></td><td>{self.id}</td><td><a href='{self.lien}' target='_blank'> {self.lien} </a></td><td>{self.vector}</td></tr>")
+        print(f"<tr id ='"+id+"'><td>{self.nom}</td><td> - </td><td> - </td><td>{str(self.fix)}</td><td><p "+color+f"'>{self.severite}</p></td><td>{self.id}</td><td><a href='{self.lien}' target='_blank'> {self.lien} </a></td><td>{self.vector}</td></tr>")
 
 
 class ListeVulnerable(object):
@@ -167,7 +167,7 @@ class Dependance(object):
         if(len(self.LVulnerable)!=0):
             print("<td><img id='"+self.Nom +""+ str(self.version)+"d' src='./derou.png' onclick='rerou(\""+ self.Nom +""+ str(self.version) +"\");rerou(\""+ self.Nom +""+ str(self.version) +"r\");derou(\""+ self.Nom +""+ str(self.version) +"d\");'><img id='"+self.Nom +""+ str(self.version)+"r' src='./rerou.png' onclick='derou(\""+ self.Nom +""+ str(self.version) +"\");derou(\""+ self.Nom +""+ str(self.version) +"r\");rerou(\""+ self.Nom +""+ str(self.version) +"d\");' style='display: none;'></td></tr>")
         for i in self.LVulnerable:
-            i.printHTML()
+            i.printHTML(self.Nom+""+str(self.version))
 
 ## 
 
@@ -242,8 +242,7 @@ print("""
             var element = document.getElementById(idElement);
             if (element){
                 element.style.display = 'none';
-                image.style.marginLeft = "auto";
-                image.style.marginRight = "auto";
+                element.style.textAlign = 'center';
             }
         }
       
@@ -251,8 +250,7 @@ print("""
             var element = document.getElementById(idElement);
             if (element){
                 element.style.display = 'block';
-                image.style.marginLeft = "auto";
-                image.style.marginRight = "auto";
+                element.style.textAlign = 'center';
             }
         }
       </script>
