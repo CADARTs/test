@@ -157,7 +157,7 @@ index ="""<!DOCTYPE html>
 <html>
   <head>
     <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
-    <script type='text/javascript'>""" + Vulnerabilite(recupJson('grypetmp.json')).returnAll() + '\n' + dep.getNbDep +"\n" +dep.getNbDepVuln+ "\n"+ dep.getNbDepNonVuln +"""\n   google.charts.load('current', {'packages':['corechart']});
+    <script type='text/javascript'>""" + Vulnerabilite(recupJson('grypetmp.json')).returnAll() + '\n' + dep.getNbDep() +"\n" +dep.getNbDepVuln()+ "\n"+ dep.getNbDepNonVuln() +"""\n   google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChartVuln);
       google.charts.setOnLoadCallback(drawChart);
 
