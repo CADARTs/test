@@ -6,12 +6,79 @@ def recupJson(path:str):
     f = open(path,'r')
     return f.read()
 
+class Version(object):
+    """
+    Class Version : permet de définir une version.\n
+    Une version est de type "10.5.1" pour la comparé il suffit demettre chaque numéro dans un tableau [10,5,1] il suffit par la suite de comparé chaque chant avec une autre version.\n
+    """
+    def __init__(self,version):
+        if(version==""):
+            self.version = None
+        elif(isinstance(version,Version)):
+            self = version
+        else:
+            self.version = version.split('.')
+    
+    def __repr__(self) -> str:
+        return f"{self.version}"
+
+    def __str__(self) -> str:
+        ret:str = ""
+        if self.version != None:
+            for i,vers in enumerate(self.version):
+                if i == len(self.version)-1:
+                    ret += vers
+                else: 
+                    ret+= vers + "."
+        return ret
+
+    def versionPlusGrande(self,o:object):
+        if not isinstance(o,Version):
+            return NotImplemented
+        if(o.version == None):
+            return self
+        if(self.version == None):
+            return o
+        if(len(o.version)>=len(self.version)):
+            for vers1,vers2 in zip(o.version,self.version):
+                vers1 = int(vers1)
+                vers2 = int(vers2)
+                if(vers1!=vers2):
+                    if(vers1>vers2):
+                        return o
+                    else:
+                        return self
+            return o
+        else:
+            for vers1,vers2 in zip(o.version,self.version):
+                vers1 = int(vers1)
+                vers2 = int(vers2)
+                if(vers1!=vers2):
+                    if(vers1>vers2):
+                        return o
+                    else:
+                        return self
+            return self
+    
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other,Version):
+            return False
+        if(other.version== None):
+            return False
+        if(self.version == None):
+            return False
+        for vers1,vers2 in zip(other.version,self.version):
+            if(vers1!=vers2):
+                return False
+        return True
+
 
 class Vulnerabilite(object):
     def __init__(self,file:str):
         self.f = file
         self.check = False
         self.vulnerabilities = [0,0,0,0,0]
+        self.LNom = []
     def __repr__(self) -> str:
         return f"Nombre de vulnérabilité :\nCritical : {self.vulnerabilities[0]}\nHigh : {self.vulnerabilities[1]}\nMedium : {self.vulnerabilities[2]}\nLow : {self.vulnerabilities[3]}\nInsignifiante : {self.vulnerabilities[4]}"
     def recupVuln(self):
@@ -19,6 +86,9 @@ class Vulnerabilite(object):
         tmpJson = json.loads(self.f)
         mat = tmpJson['matches']
         for i in mat:
+            nom = i['artifact']['name']
+            if nom not in self.LNom:
+                self.LNom.append(nom)
             vul = i['vulnerability']
             if( vul['severity'] =='Critical'):
                 self.vulnerabilities[0]+=1
@@ -30,15 +100,6 @@ class Vulnerabilite(object):
                 self.vulnerabilities[3]+=1
             else:
                 self.vulnerabilities[4]+=1
-    
-    def printAll(self):
-        if self.check == False:
-            self.recupVuln()
-        print(f"var crit = {self.vulnerabilities[0]};")
-        print(f"var hig = {self.vulnerabilities[1]};")
-        print(f"var med = {self.vulnerabilities[2]};")
-        print(f"var low = {self.vulnerabilities[3]};")
-        print(f"var ins = {self.vulnerabilities[4]};")
 
     def returnAll(self):
         if self.check == False:
@@ -49,57 +110,54 @@ var med = {self.vulnerabilities[2]};
 var low = {self.vulnerabilities[3]};
 var ins = {self.vulnerabilities[4]};
 var totalVuln = crit + hig + med + low + ins;"""
-
-    def Critical(self):
-        if self.check == False:
-            self.recupVuln()
-        
-    
-    def High(self):
-        if self.check == False:
-            self.recupVuln()
-        
-    
-    def Medium(self):
-        if self.check == False:
-            self.recupVuln()
-        
-    
-    def Low(self):
-        if self.check == False:
-            self.recupVuln()
-        
-    
-    def Insignifient(self):
-        if self.check == False:
-            self.recupVuln()
         
 
 class Dependancies(object):
     def __init__(self,file:str):
         self.nbDep = 0
         self.f = file
+        self.LNom = []
+        self.LVerion = []
     
     def recupDepend(self):
         tmpJson = json.loads(self.f)
         art = tmpJson['artifacts']
-        for i,_ in enumerate(art):
-            """
-            do nothing just count
-            """
-        self.nbDep = i+1
+        for i in art:
+            trouve = False
+            name = i['name']
+            version = i['version']
+            for j,tmp in enumerate(self.LNom):
+                if name == tmp and self.LVerion[j]==version:
+                    trouve = True
+            if trouve != True:
+                self.LNom.append(name)
+                self.LVerion.append(Version(version))
+        
+
 
     def getNbDep(self):
         self.recupDepend()
-        return f"var total = {self.nbDep};"
+        return f"var total = {len(self.LNom)};"
     
+    def getNbDepNonVuln(self,LVuln:Vulnerabilite):
+        """"
+        Retourne le nombre de dépendance qui a aucune vulnérabilité
+        """
+        return f"var totalSVuln = len(self.LNom)-len(self(LVuln.LNom))"
+            
+
+    def getNbDepVuln(self,LVuln:Vulnerabilite):
+        return f"var totalVuln = len(self(LVuln.LNom))"
+    
+
+dep =  Dependancies(recupJson('syfttmp.json'))
 
 index ="""<!DOCTYPE html>
 <!--**This file is automatically generated-->
 <html>
   <head>
     <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
-    <script type='text/javascript'>""" + Vulnerabilite(recupJson('grypetmp.json')).returnAll() + '\n' + Dependancies(recupJson('syfttmp.json')).getNbDep() +"""\n   google.charts.load('current', {'packages':['corechart']});
+    <script type='text/javascript'>""" + Vulnerabilite(recupJson('grypetmp.json')).returnAll() + '\n' + dep.getNbDep +"\n" +dep.getNbDepVuln+ "\n"+ dep.getNbDepNonVuln +"""\n   google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChartVuln);
       google.charts.setOnLoadCallback(drawChart);
 
@@ -135,7 +193,7 @@ index ="""<!DOCTYPE html>
         var data = google.visualization.arrayToDataTable([
           ['Dep', 'Nb'],
           ['Vulnérable',     totalVuln],
-          ['Ok',      total]
+          ['Ok',      totalSVuln]
         ]);
 
         var options = {
