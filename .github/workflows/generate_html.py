@@ -143,11 +143,11 @@ class Dependancies(object):
         """"
         Retourne le nombre de dépendance qui a aucune vulnérabilité
         """
-        return f"var totalSVuln = {len(self.LNom)-len(self.LVuln.LNom)}"
+        return f"var totalSVuln = {len(self.LNom)-len(LVuln.LNom)}"
             
 
     def getNbDepVuln(self,LVuln:Vulnerabilite):
-        return f"var totalWVuln = {len(self.LVuln.LNom)}"
+        return f"var totalWVuln = {len(LVuln.LNom)}"
     
 
 dep =  Dependancies(recupJson('syfttmp.json'))
