@@ -193,7 +193,7 @@ index ="""<!DOCTYPE html>
 
         var data = google.visualization.arrayToDataTable([
           ['Dep', 'Nb'],
-          ['Vulnérable',     totalVuln],
+          ['Vulnérable',     totalWVuln],
           ['Ok',      totalSVuln]
         ]);
 
