@@ -1,5 +1,4 @@
 import json
-from colorama import init, Fore
 
 def fromJSON(data:str):
     with open(data,'r') as file:
@@ -46,7 +45,6 @@ class SnykAnalyser(object):
     def __call__(self):
         snyk = self.jsonFile["runs"][0]
         rules = snyk["tool"]["driver"]["rules"]
-        init()
 
         for i in rules:
             self.ruleIndex.append(i["shortDescription"]["text"])
