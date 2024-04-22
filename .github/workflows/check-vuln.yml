@@ -65,11 +65,14 @@ jobs:
         with:
           go-version: "1.13"
 
-      - name: Snyke auth
-        run: snyk auth 60de89ae-70a6-4a08-82e0-4b5791e77f75
-
       - name: Snyk launch
-        run: snyk code test --json > snyk.json
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: snyk auth 60de89ae-70a6-4a08-82e0-4b5791e77f75
+        with:
+          command: code test
+          args: --json
+          
 
       - name: Upload Snyk Summary
         uses: actions/upload-artifact@v4.3.1
