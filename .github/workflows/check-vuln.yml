@@ -167,7 +167,7 @@ jobs:
       - name: Archive Issues as Artifact
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: artifact_Issues
+          name: artifact_issues
           path: ./issues.html
       
     
@@ -189,6 +189,11 @@ jobs:
         uses: actions/download-artifact@v4.1.4
         with:
           name: artifact_dependance
+
+      - name: Retrieving Issues artifact
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: artifact_issues
       
       - name: copy home.png derou.png rerou.png
         run: |
