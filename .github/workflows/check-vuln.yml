@@ -66,10 +66,8 @@ jobs:
           go-version: "1.13"
 
       - name: Snyk launch
-        uses: snyk/actions/node@master
-        with:
-          command: code test
-          args: --json
+        run: |
+          snyk code test --all-projects --json > snyk.json
         env:
           SNYK_TOKEN: 60de89ae-70a6-4a08-82e0-4b5791e77f75
           
