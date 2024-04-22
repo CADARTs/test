@@ -67,7 +67,7 @@ jobs:
         run: snyk auth 60de89ae-70a6-4a08-82e0-4b5791e77f75
 
       - name: Snyk launch
-        run: run code test --json
+        run: code test --json
 
 
   ## Crée le index.html pour visualiser les failles possibles        
