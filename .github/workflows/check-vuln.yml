@@ -49,6 +49,27 @@ jobs:
           name: syft_summary
           path: syfttmp.json
 
+  ## Test SNYK
+  Run-Snyk:
+    name: Test Snyk
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses : actions/checkout@v4
+      
+      - name: Retrieving Snyk
+        run: |
+          curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
+          chmod +x ./snyk
+          mv ./snyk /usr/local/bin/
+        
+      - name: Snyk auth
+        run: snyk auth
+
+      - name: Snyk launch
+        run: run code test --json
+
+
   ## Crée le index.html pour visualiser les failles possibles        
   Upload-index:
     name: Upload index
