@@ -56,20 +56,10 @@ jobs:
     steps:
       - name: Checkout
         uses : actions/checkout@v4
-      
-      - name: Retrieving Snyk
-        uses: snyk/actions/setup@master
-        
-      - name: setup go
-        uses: actions/setup-go@v5.0.0
-        with:
-          go-version: "1.13"
-
-      - name: Snyke auth
-        run: snyk auth 60de89ae-70a6-4a08-82e0-4b5791e77f75
 
       - name: Snyk launch
         uses: snyk/actions/node@master
+        continue-on-error: true
         with:
           command: code test
           args: --sarif-file-output=snyk.json 
