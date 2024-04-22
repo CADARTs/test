@@ -64,7 +64,7 @@ jobs:
           mv ./snyk /usr/local/bin/
         
       - name: Snyk auth
-        run: snyk auth --org bcf9587f-7253-4ac5-a42d-0e6720fb3129
+        run: snyk auth 60de89ae-70a6-4a08-82e0-4b5791e77f75
 
       - name: Snyk launch
         run: run code test --json
