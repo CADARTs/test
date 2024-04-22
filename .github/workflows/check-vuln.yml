@@ -67,7 +67,13 @@ jobs:
         run: snyk auth 60de89ae-70a6-4a08-82e0-4b5791e77f75
 
       - name: Snyk launch
-        run: code test --json
+        run: snyk code test --json > snyk.json
+
+      - name: Upload Snyk Summary
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: snyk_summary
+          path: snyk.json 
 
 
   ## Crée le index.html pour visualiser les failles possibles        
@@ -138,9 +144,38 @@ jobs:
           name: artifact_dependance
           path: ./dependance.html
 
+  Upload-Code-Issues:
+    name: Code Issues
+    needs: Run-Snyk
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+    
+      - name: Retrieving Snyk Summary
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: snyk_summary
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: '3.x'
+      
+      - name: Exec python scrypt
+        run: python ./.github/workflows/snyk.py > issues.html
+      
+      - name: Archive Issues as Artifact
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: artifact_Issues
+          path: ./issues.html
+      
+    
   Upload-Artifact:
     name: Retireve and upload artifact
-    needs: [Upload-index,Upload-Dep]
+    needs: [Upload-index,Upload-Dep,Upload-Code-Issues]
     runs-on: ubuntu-latest
 
     steps:
@@ -173,6 +208,7 @@ jobs:
             ./home.png
             ./derou.png
             ./rerou.png
+            ./issues.html
 
   ## Retire les artefacts temporaires
   Remove-Artifact:
