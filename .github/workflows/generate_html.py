@@ -235,6 +235,12 @@ index ="""<!DOCTYPE html>
     </style>
   </head>
   <body>
+
+  <a href="./index.html">
+    <!-- Button element -->
+    <button class="button">Retour sur le menu principale</button>
+    </a>
+
   <a href="./dependance.html">
     <!-- Button element -->
     <button class="button">Voir les dépendances</button>

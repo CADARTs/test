@@ -210,7 +210,7 @@ class ListeDependance(object):
     def printHTML(self):
         print("<div class='table-container'><table classe='t1'>")
         print("""<thead>
-<tr><td>Nom</td><td>Version</td><td>Nombre de vulnérabilité</td><td>Version Fix</td><td>Sévérité</td><td>ID</td><td>Lien</td><td>Vector</td><td><a href="./index.html">
+<tr><td>Nom</td><td>Version</td><td>Nombre de vulnérabilité</td><td>Version Fix</td><td>Sévérité</td><td>ID</td><td>Lien</td><td>Vector</td><td><a href="./dependencies.html">
     <!-- Button element -->
     <button class="button"></button>
     </a></td></tr></thead><tbody>""")

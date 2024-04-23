@@ -77,8 +77,35 @@ print("""
       <html>
         <head>
             <title>Code Issues</title>
+      <style>
+    .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 8px;
+            border: 2px solid #4CAF50; /* Green border */
+        }
+
+        /* Hover effect */
+        .button:hover {
+            background-color: white;
+            color: #4CAF50;
+        }
+    </style>
         </head>
         <body>
+      <a href="./dependance.html">
+    <!-- Button element -->
+    <button class="button">Retour sur le menus principale</button>
+    </a>
 """)
 
 print(myAnalyser)

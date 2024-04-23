@@ -75,7 +75,7 @@ jobs:
 
 
   ## Crée le index.html pour visualiser les failles possibles        
-  Upload-index:
+  Upload-dependencies:
     name: Upload index
     needs: [Run-Grype,Run-Syft]
     runs-on: ubuntu-latest
@@ -100,13 +100,13 @@ jobs:
           python-version: '3.x'
 
       - name: Exec python scrypt
-        run: python ./.github/workflows/generate_html.py > index.html
+        run: python ./.github/workflows/generate_html.py > dependencies.html
 
-      - name: Archive index as Artifact
+      - name: Archive dependencies as Artifact
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: artifact_index
-          path: ./index.html
+          name: artifact_dependencies
+          path: ./dependencies.html
 
   ## Crée le dépendance.html pour visualiser les failles trouvé par grype:
   Upload-Dep:
@@ -173,17 +173,22 @@ jobs:
     
   Upload-Artifact:
     name: Retireve and upload artifact
-    needs: [Upload-index,Upload-Dep,Upload-Code-Issues]
+    needs: [Upload-dependencies,Upload-Dep,Upload-Code-Issues]
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Retrieving index artifact
+      - name: Set up Python
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: '3.x'
+
+      - name: Retrieving dependencies artifact
         uses: actions/download-artifact@v4.1.4
         with:
-          name: artifact_index
+          name: artifact_dependencies
       
       - name: Retrieving Dependance artifact
         uses: actions/download-artifact@v4.1.4
@@ -194,6 +199,9 @@ jobs:
         uses: actions/download-artifact@v4.1.4
         with:
           name: artifact_issues
+
+      - name: Exec python scrypt
+        run: python ./.github/workflows/create_index.py > index.html
       
       - name: copy home.png derou.png rerou.png
         run: |
@@ -212,6 +220,7 @@ jobs:
             ./derou.png
             ./rerou.png
             ./issues.html
+            ./dependencies.html
 
   ## Retire les artefacts temporaires
   Remove-Artifact:
