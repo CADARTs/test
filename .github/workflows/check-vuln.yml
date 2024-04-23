@@ -64,19 +64,48 @@ jobs:
           command: code test
           args: --sarif-file-output=snyk.json 
         env:
-          SNYK_TOKEN: 60de89ae-70a6-4a08-82e0-4b5791e77f75
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           
-
       - name: Upload Snyk Summary
         uses: actions/upload-artifact@v4.3.1
         with:
           name: snyk_summary
           path: snyk.json 
 
+  Run-SAST:
+    name: SAST
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses : actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: '14'
+      
+      - name: Install Dep
+        run: npm install
+
+      - name: Snyk launch
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        with:
+          command: test
+          args: --sarif-file-output=SAST.json 
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Upload Snyk Summary
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: SAST_summary.
+          path: SAST.json 
+
 
   ## Crée le index.html pour visualiser les failles possibles        
   Upload-dependencies:
-    name: Upload index
+    name: Upload chart's dependencies
     needs: [Run-Grype,Run-Syft]
     runs-on: ubuntu-latest
 

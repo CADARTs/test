@@ -40,7 +40,7 @@ class SnykAnalyser(object):
     def __str__(self) -> str:
         for i in self.vuln:
             print(str(i))
-        return f"\nSummary:\n\n\t{self.nbVuln} Code issues found"
+        return f"<script>var vul =  {self.nbVuln}; document.getElementById('issue').innerHTML = 'Issues : ' + vul; </script>"
 
     def __call__(self):
         snyk = self.jsonFile["runs"][0]
@@ -102,10 +102,12 @@ print("""
     </style>
         </head>
         <body>
-      <a href="./dependance.html">
+      <a href="./index.html">
     <!-- Button element -->
     <button class="button">Retour sur le menus principale</button>
     </a>
+      
+      <div><h1 id='issue'></h1></div>
 """)
 
 print(myAnalyser)
